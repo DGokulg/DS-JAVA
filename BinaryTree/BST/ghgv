@@ -1,0 +1,33 @@
+ public static Node delete(Node root, int key) {
+        if (root == null) return null;
+
+        // Traverse the tree
+        if (key < root.data) {
+            root.left = delete(root.left, key);
+        } else if (key > root.data) {
+            root.right = delete(root.right, key);
+        } else {
+            // Node found
+            // Case 1 & 2: One child or no child
+            if (root.left == null)
+                return root.right;
+            else if (root.right == null)
+                return root.left;
+
+            // Case 3: Two children
+            root.data = minValue(root.right); // Replace with inorder successor
+            root.right = delete(root.right, root.data); // Delete successor
+        }
+
+        return root;
+    }
+
+    // Find the minimum value in a BST (used for inorder successor)
+    private static int minValue(Node node) {
+        int min = node.data;
+        while (node.left != null) {
+            min = node.left.data;
+            node = node.left;
+        }
+        return min;
+    }
